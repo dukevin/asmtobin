@@ -55,7 +55,7 @@
 				$suff = $line[0] == 'done' ? '1111' : '0000';
 			$out[] = '0'.$conversion[$line[0]].$suff;
 		}
-		$result[] = $line."->".$out[sizeof($out)-1];
+		$result[] = implode(" ",$line)."->".$out[sizeof($out)-1];
 	}
 	//file_put_contents("$OUTPUT", print_r(implode("",$out), true));
 	//echo "Outputted binary to $OUTPUT containing:\n";
