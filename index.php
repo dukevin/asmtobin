@@ -11,7 +11,7 @@
 			<input type="submit" name="submit">
 		</form>-->
 		<h3>Paste asm code here</h3>
-		<form action="convert.php" method="post" id="inform">
+		<form action="asmTobin.php" method="post" id="inform">
 			<textarea name="intxt" form="inform" rows="50" cols="50"></textarea>
 			<input type="submit" name="submit">
 		</form>
