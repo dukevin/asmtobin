@@ -1,5 +1,6 @@
 <?php
 	$INPUT = $_POST['in'];
+	$INTXT = $_POST['intxt'];
 	//$OUTPUT = "instruct.txt";
 	$conversion = array(
 		'add' => 01001,
@@ -27,7 +28,15 @@
 	while(($line = fgets($h)) !== false)
 	{
 		$lnum++;
-		$line = explode(" ", $line);
+		$line = explode(" ", trim($line));
+		$cmt = false;
+		foreach($line as $i => $word)
+		{
+			if($word[0] == '#')
+				$cmt = true;
+			if($cmt == true)
+				unset($line[$i]);
+		}
 		if($line[0]=='@')
 		{
 			if(sizeof($line) == 3)
@@ -35,12 +44,14 @@
 			else if(sizeof($line) == 2)
 				$out[] = "1".sprintf("%08d", decbin($line[1]));
 			else
-				die("Invalid args to '@' on line: ".$lnum);
+				die("Invalid args to '@' on line: ".$lnum. ": $line");
 		}
 		else
 		{
+			if($line[0] == '#' || empty(trim($line)))
+				continue;
 			if(!isset($conversion[$line[0]]))
-				die("Invalid instruction '".$line[0]."' on line $lnum");
+				die("Invalid instruction '".$line[0]."' on line $lnum: $line");
 			if(sizeof($line) == 2)
 				$suff = sprintf("%04d", decbin($line[1]));
 			else

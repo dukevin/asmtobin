@@ -9,5 +9,10 @@
 		<form action="convert.php" method="post">
 			<input type="file" name="in">
 		</form>
+		<!--<h3>or paste asm code here</h3>
+		<form action="convert.php" method="post" id="inform">
+			<textarea name="intxt" form="inform" rows="50" cols="50"></textarea>
+			<input type="submit" name="submit">
+		</form>-->
 	</body>
 </html>
