@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<h3>Select asm file to convert to bin</h3>
-		<form action="asnTobin.php" method="post">
+		<form action="asmTobin.php" method="post">
 			<input type="file" name="in">
 			<input type="submit" name="submit">
 		</form>
