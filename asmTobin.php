@@ -62,5 +62,5 @@
 	echo implode("",$out);
 ?>
 <pre>
-<?php echo implode("\n",$result);
+<?php echo implode("\n",$result); ?>
 </pre>
