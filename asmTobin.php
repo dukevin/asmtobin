@@ -45,8 +45,9 @@
 		}
 		else
 		{
-			if($line[0] == '#' || empty(trim($line[0])))
+			if($line[0] == '#' || empty(trim($line)))
 				continue;
+			echo "> ".$conversion($line[0]);
 			if(!isset($conversion[$line[0]]))
 				die("Invalid instruction '".$line[0]."' on line $lnum: $line");
 			if(sizeof($line) == 2)
