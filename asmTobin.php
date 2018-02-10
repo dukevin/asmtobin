@@ -21,7 +21,7 @@
 		die("Nothing was supplied");
 	$out = array();
 	$lnum = 0;
-	$lines = explode(PHP_EOL, $INPUT)
+	$lines = explode(PHP_EOL, $INPUT);
 	foreach($lines as $line)
 	{
 		$lnum++;
