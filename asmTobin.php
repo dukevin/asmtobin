@@ -45,7 +45,7 @@
 		}
 		else
 		{
-			if($line[0] == '#' || empty(trim($line)))
+			if($line[0] == '#' || empty(trim($line[0])))
 				continue;
 			if(!isset($conversion[$line[0]]))
 				die("Invalid instruction '".$line[0]."' on line $lnum: $line");
