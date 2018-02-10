@@ -1,6 +1,5 @@
 <?php
-	$INPUT = $_POST['in'];
-	$INTXT = $_POST['intxt'];
+	$INPUT = $_POST['intxt'];
 	//$OUTPUT = "instruct.txt";
 	$conversion = array(
 		'add' => 01001,
@@ -18,14 +17,12 @@
 		'done' => 01111,
 		'testtopbits' => 01110
 	);
-	if(!isset($INPUT))
-		die("No file was supplied");
+	if(!isset($INPUT) || empty($INPUT))
+		die("Nothing was supplied");
 	$out = array();
-	$h = fopen($INPUT, "r");
-	if(!$h)
-		die("Cannot open file: '$INPUT'");
 	$lnum = 0;
-	while(($line = fgets($h)) !== false)
+	$lines = explode(PHP_EOL, $INPUT)
+	foreach($lines as $line)
 	{
 		$lnum++;
 		$line = explode(" ", trim($line));
