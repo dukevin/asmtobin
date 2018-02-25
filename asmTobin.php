@@ -81,9 +81,19 @@
 	echo implode("",$out);
 ?>
 </textarea>
-<pre>
-<?php echo implode("\n",$result); ?>
-</pre>
+<table style="font-family:courier;font-size:10pt">
+<th style="text-align:left">Assembly</th><th style="text-align:left">Binary conversion</th>
+<?php
+foreach($result as $r)
+{
+	$s = explode(" -> ", $r);
+	?>
+	<tr><td><?=$s[0]?></td><td><?=$s[1]?></td></tr>
+<?php
+}
+
+?>
+</table>
 
 <?php
 function iscmt($e) {
