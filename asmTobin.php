@@ -31,7 +31,7 @@
 		$tmp = array_filter($line,"iscmt");
 		if(!empty($tmp))
 			$line = array_filter(array_splice($line, 0, key($tmp)));
-		if(empty($line)||$line[0] == '#')
+		if(empty($line)||$line[0] == '#'||empty($line[0]))
 			continue;
 		if($line[0]=='@')
 		{
