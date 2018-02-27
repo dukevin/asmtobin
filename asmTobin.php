@@ -1,4 +1,4 @@
-<textarea rows="25" cols="25" style="margin:0 auto">
+<textarea rows="25" cols="25">
 <?php
 	$INPUT = $_POST['intxt'];
 	//$OUTPUT = "instruct.txt";
@@ -41,7 +41,7 @@
 			if($line[0] == "@")
 				$out[] = "1".readreg($line[1], 4).readreg($line[1], 4);
 			else
-				err("Invalid args to '{$line[0]}', only @ supports 2 args. On line $lnum (".implode(" ",$line).")");
+				err("Invalid args to '{$line[0]}' does not take 2 args. On line $lnum (".implode(" ",$line).")");
 		}
 		if(sizeof($line) == 2)
 		{
