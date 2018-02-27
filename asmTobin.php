@@ -3,23 +3,24 @@
 	$INPUT = $_POST['intxt'];
 	//$OUTPUT = "instruct.txt";
 	$conversion = array(
-		'add' => "01001",
-		'sub' => "01010",
-		'set' => "00111",
-		'store' => "00111",
-		'load' => "00101",
-		'branchifzero' => "00010",
-		'branchifpos' => "00011",
-		'branchifnooverflow' => "00001",
-		'jump' => "00000",
-		'compare' => "01011",
-		'increment' => "01100",
-		'shiftleft' => "01101",
-		'done' => "01111",
-		'testtopbits' => "01110"
+		'add' => "1001",
+		'sub' => "1010",
+		'set' => "0111",
+		'store' => "0111",
+		'load' => "0101",
+		'branchifzero' => "000100000",
+		'branchifpos' => "000110000",
+		'branchifnooverflow' => "000010000",
+		'jump' => "000000000",
+		'compare' => "1011",
+		'increment' => "1100",
+		'shiftleft' => "1101",
+		'done' => "011111111",
+		'testtopbits' => "1110",
+		'deref' => "0100"
 	);
 	if(!isset($INPUT) || empty($INPUT))
-		die("Nothing was supplied");
+		err("Nothing was supplied");
 	$out = array();
 	$lnum = 0;
 	$lines = explode(PHP_EOL, $INPUT);
@@ -33,46 +34,37 @@
 			$line = array_filter(array_splice($line, 0, key($tmp)));
 		if(empty($line)||$line[0] == '#'||empty($line[0]))
 			continue;
-		if($line[0]=='@')
+		if(is_array($line[0]))
+			$line = implode(" ",$line[0]);
+		if(sizeof($line) == 3)
 		{
-			// if(sizeof($line) == 1 && isset($line[1])) 
-			// {
-			// 	$line[1] = str_replace("@","",$line[0]);
-			// 	$line[0] = "@";
-			// }
-			if(sizeof($line) == 2)
-				$out[] = "1".(string)sprintf("%08b", decbin($line[1]));
-			else if(sizeof($line) == 3) 
-			{
-				if($line[2]=="x")
-					$suf = "";
-				else
-					$suf = (string)sprintf("%04b", decbin($line[2]));
-				$out[] = "1".(string)sprintf("%04b", decbin($line[1]).$suf);
-			}
+			if($line[0] == "@")
+				$out[] = "1".readreg($line[1], 4).readreg($line[1], 4);
 			else
-				die("Expects 1 or 2 args to '@' but got ".(sizeof($line)-1)." on line ".$lnum. ": ".implode(" ",$line));
+				err("Invalid args to '{$line[0]}', only @ supports 2 args. On line $lnum (".implode(" ",$line).")");
 		}
-		else
+		if(sizeof($line) == 2)
 		{
-			if(!isset($conversion[strtolower($line[0])])) {
-				if(($line[0][0])=="@")
-					die("Expects 1 or 2 args to '@' but got ".(sizeof($line)-1)." on line: ".$lnum. ": ".implode(" ",$line));
-				die("Invalid instruction '".$line[0]."' on line $lnum: ".implode(" ",$line));
-			}
-			if(sizeof($line) == 3) 
+			if($line[0] == '@')
+				$out[] = "1".readreg($line[1], 8);
+			else 
 			{
-				if($line[2]=="x")
-					$suff2 = "";
-				else
-					$suff2 = sprintf("%04b", decbin($line[2]));
-				$suff = (string)sprintf("%04b", decbin($line[1]).$suff2);
-			}
-			if(sizeof($line) == 2)
-				$suff = (string)sprintf("%04b", decbin($line[1]));
-			else
-				$suff = $line[0] == 'done' ? '1111' : '0000';
-			$out[] = '0'.$conversion[strtolower($line[0])].$suff;
+				if(!isset($conversion[strtolower($line[0])])) 
+				{
+					if(($line[0][0])=="@")
+						err("Expected 1 or 2 args to '@' but got ".(sizeof($line)-1)." on line: ".$lnum. ": ".implode(" ",$line));
+					err("Invalid instruction '".$line[0]."' on line $lnum: ".implode(" ",$line));
+				}
+				if(strlen($conversion[strtolower($line[0])]) == 9)
+					err($line[0]." expects no arguments but got 1 on line $lnum (".implode(" ",$line).")");
+				$out[] = "0".$conversion[strtolower($line[0])].readreg($line[1], 4);
+			}	
+		}
+		if(sizeof($line) == 1)
+		{
+			if(strlen($conversion[strtolower($line[0])]) != 9)
+				err("Missing args to ".$line[0]." on line $lnum (".implode(" ",$line).")");
+			$out[] = $conversion[strtolower($line[0])];
 		}
 		$result[] = implode(" ",$line)." -> ".$out[sizeof($out)-1];
 	}
@@ -98,5 +90,24 @@ foreach($result as $r)
 <?php
 function iscmt($e) {
   return strpos($e, "#") !== false;
+}
+function err($s) {
+	die("</textarea><br>Assembly Bug: $s");
+}
+function readreg($str, $bits) 
+{
+	global $lnum;
+	if($str[0] == '$' && $str[1] == 'r')
+	{
+		$val = substr($str, 2);
+		return sprintf("%0{$bits}s",decbin($val));
+	}
+	else if($str[0] == '$' && $str[1] == '0')
+		return "1110";
+	else if(is_numeric($str[0]) || $str[0] == '-')
+		return sprintf("%0{$bits}s",decbin((int)$str[0]));
+	else if($str == "x")
+		return "1111";
+	else err("Expected register \$rx or int but got '$str' on line $lnum");
 }
 ?>
