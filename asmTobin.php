@@ -105,7 +105,7 @@ function readreg($str, $bits)
 	else if($str[0] == '$' && $str[1] == '0')
 		return "1110";
 	else if(is_numeric($str))
-		if($str < -1)
+		if($str < 0)
 			return substr(decbin($str),$bits*-1);
 		else
 			return sprintf("%0{$bits}s",decbin($str));
