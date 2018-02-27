@@ -105,7 +105,7 @@ function readreg($str, $bits)
 	else if($str[0] == '$' && $str[1] == '0')
 		return "1110";
 	else if(is_numeric($str[0]) || $str[0] == '-')
-		return sprintf("%0{$bits}s",decbin((int)$str[0]));
+		return sprintf("%0{$bits}s",decbin($str));
 	else if($str == "x")
 		return "1111";
 	else err("Expected register \$rx or int but got '$str' on line $lnum");
