@@ -70,7 +70,7 @@
 	}
 	//file_put_contents("$OUTPUT", print_r(implode("",$out), true));
 	//echo "Outputted binary to $OUTPUT containing:\n";
-	echo implode("",$out);
+	echo implode("\n",$out);
 ?>
 </textarea>
 <table style="font-family:courier;font-size:10pt">
