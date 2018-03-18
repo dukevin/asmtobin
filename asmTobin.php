@@ -39,7 +39,7 @@
 		if(sizeof($line) == 3)
 		{
 			if($line[0] == "@")
-				$out[] = "1".readreg($line[1], 4).readreg($line[1], 4);
+				$out[] = "1".readreg($line[1], 4).readreg($line[2], 4);
 			else
 				err("Invalid args to '{$line[0]}' does not take 2 args. On line $lnum (".implode(" ",$line).")");
 		}
