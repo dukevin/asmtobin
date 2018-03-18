@@ -6,7 +6,7 @@
 		'add' => "1001",
 		'sub' => "1010",
 		'set' => "0111",
-		'store' => "0111",
+		'store' => "0110",
 		'load' => "0101",
 		'branchifzero' => "000100000",
 		'branchifpos' => "000110000",
@@ -70,7 +70,7 @@
 	}
 	//file_put_contents("$OUTPUT", print_r(implode("",$out), true));
 	//echo "Outputted binary to $OUTPUT containing:\n";
-	echo implode("",$out);
+	echo implode("\n",$out);
 ?>
 </textarea>
 <table style="font-family:courier;font-size:10pt">
